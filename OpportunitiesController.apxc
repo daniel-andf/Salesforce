@@ -1,0 +1,17 @@
+public class OpportunitiesController {
+    @AuraEnabled
+    public static List<Opportunity> getOpportunities(String account){
+        	return [SELECT Id, Name,StageName,LeadSource,CloseDate FROM Opportunity WHERE Account.Name = :account];
+    }
+    
+    @AuraEnabled
+    public static void delOpportunity(String name){
+        Opportunity opp = [SELECT Name from Opportunity WHERE Name= :name];
+        delete opp;
+    }
+    
+	@AuraEnabled	
+    public static List<Account> getAccounts() {
+    	return [SELECT Id,Name FROM Account ORDER BY Name ASC];
+    }
+}

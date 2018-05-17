@@ -1,0 +1,14 @@
+trigger OpportunityDeletion on Opportunity (before delete) {
+     List<Opportunity> opp = [SELECT Id FROM Opportunity
+                     WHERE Id IN :Trigger.old];
+    for (Opportunity currentOpp : opp){
+	 	List <Task> t = [SELECT WhatId FROM Task WHERE WhatId = :currentOpp.Id];
+        if (t.size() > 0)
+        {
+        	Trigger.oldMap.get(currentOpp.Id).addError(
+            	'Cannot delete opportunities with related tasks.');
+            System.debug('Cannot delete opportunities with related tasks.');
+          
+   	 	}
+     }
+}

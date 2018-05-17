@@ -1,0 +1,70 @@
+<aura:component controller="OpportunitiesController" implements="flexipage:availableForAllPageTypes" access="global">
+    <aura:dependency resource="markup://force:navigateToURL" type="EVENT"/>
+
+  <aura:attribute name="opportunities" type="List" />
+  <aura:attribute name="accts" type="List" />
+  <aura:handler name="init" value="{!this}" action="{!c .doInit}" />
+	<div>
+      <h2 class="main-title">Opportunities per account</h2>
+      <br /><br />
+  	  <div class="account-list">
+  	  	<form onsubmit="!c.getOpportunities">
+    		<ui:inputSelect aura:id="accountlist" label="Select the account " change="{!c.onSelectChange}">
+          		<ui:inputSelectOption text="-----" label="Select one account"/>
+            
+    	  		<aura:iteration items="{!v.accts}" var="account" >
+              
+               		<ui:inputSelectOption text="{!account.Name}" label="{!account.Name}"/>
+           
+     	  		</aura:iteration>
+    
+        	</ui:inputSelect>
+
+   	  	</form>
+  	  </div>
+  	  <br /><br />
+  	  <p>
+      	<h1>Opportunities</h1><br/>
+  	  </p> 
+      <table class="slds-table slds-table--bordered slds-table--striped slds-table--cell-buffer slds-table--fixed-layout">
+      <thead>
+      	<tr class="slds-text-heading--label">
+        	<th scope="col"><div class="slds-truncate" title="ID">ID</div></th>
+        	<th scope="col"><div class="slds-truncate" title="Name">Name</div></th>
+        	<th scope="col"><div class="slds-truncate" title="Stage Name">Stage Name</div></th>
+        	<th scope="col"><div class="slds-truncate" title="Lead Source">Lead Source</div></th>
+        	<th scope="col"><div class="slds-truncate" title="Close Date">Close Date</div></th>
+            <th scope="col"><div class="slds-truncate" title="Options">Options</div></th>
+      	</tr>
+       </thead>
+       <tbody>
+
+      	<aura:iteration items="{!v.opportunities}" var="opportunity">
+        	<tr>
+        	  <th scope="row"><div class="slds-truncate" title="{!opportunity.Id}">{!opportunity.Id}</div></th>
+          	  <td><div class="slds-truncate" title="{!opportunity.Name}">{!opportunity.Name}</div></td>
+          	  <td><div class="slds-truncate" title="{!opportunity.StageName}">{!opportunity.StageName}</div></td>
+          	  <td><div class="slds-truncate" title="{!opportunity.LeadSource}">{!opportunity.LeadSource}</div></td>
+          	  <td><div class="slds-truncate" title="{!opportunity.CloseDate}">{!opportunity.CloseDate}</div></td>
+          	  <td>
+            	<form class="opportunity-form">
+                	<lightning:button label="Edit" 
+                                value="{!opportunity.Id}"
+                                iconName="utility:edit"
+                                iconPosition="left"
+                                variant="brand"
+                                onclick="{!c.redirectOpportunity}"
+                                 />
+               		<lightning:button label="Delete" value="{!opportunity.Name}"
+                                iconName="utility:delete"
+                                iconPosition="left"
+                                variant="destructive"
+                                onclick="{!c.deleteOpportunity}" />
+                </form>
+          	 </td>
+          </tr>
+    	  </aura:iteration>
+    	</tbody>
+  	</table>
+  </div>
+</aura:component>
